@@ -1,13 +1,15 @@
-local Pin = require('bufpin.app')
+local App = require('bufpin.app')
 
 local M = {}
 
 M.setup = function(opts)
-  opts = opts or {}
+  opts = {
+    show_board = true,
+  }
 
-  M.pin = Pin:new(opts)
+  M.app = App:new(opts)
 
-  M.pin:run()
+  M.app:run()
 end
 
 return M

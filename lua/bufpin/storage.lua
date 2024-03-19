@@ -1,28 +1,23 @@
-local Pins = {
+local Storage = {
   pins = {
     -- '/Users/lucky/dev/project/neovim-plugins/pin.nvim/lua/pin.lua',
     -- '/Users/lucky/dev/project/neovim-plugins/pin.nvim/lua/app.lua',
     -- '/Users/lucky/dev/project/neovim-plugins/pin.nvim/lua/config.lua',
-    'pin.go',
-    'app.js',
-    'config.lua',
-    'config.rs',
-    'config.ts',
-    'application/config.vue',
-    'something/config.vue',
+    { path = './pin.go', pinned = false },
+    { path = '/Home/dir/pin.rs', pinned = false },
+    { path = 'something/pin.js', pinned = false },
+    { path = 'otherthing/pin.lua', pinned = false },
   },
 }
 
-function Pins:new()
+function Storage:new()
   return self
 end
 
-function Pins:count()
-  return #self.pins
+function Storage:get_all()
+  return {}
 end
 
-function Pins:get_all()
-  return self.pins
-end
+function Storage:save() end
 
-return Pins
+return Storage
