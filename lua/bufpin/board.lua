@@ -2,9 +2,11 @@
 local Board = {}
 
 ---@return Board
-function Board:new()
+function Board:new(opts)
   self.padding = 0
   self.is_show = false
+  self.opts = opts
+
   return self
 end
 
@@ -12,49 +14,54 @@ function Board:ishow()
   return self.is_show
 end
 
--- TODO: if data is too long or opts.max_width limited
+-- TODO: the width should be more flexible when secondary directories
 function Board:get_win_opts()
-  local width = 20
-  -- for _, txt in pairs(list) do
-  --   if #txt > width then
-  --     width = #txt
-  --   end
-  -- end
-  local row = vim.o.lines / 2
+  local row = vim.o.lines / 2 - 20
   local col = vim.o.columns
 
   return {
     style = 'minimal',
     relative = 'editor',
     focusable = false,
+    width = 20,
     height = 10,
-    width = width,
     row = row,
     col = col,
+    border = self.opts.border,
   }
 end
 
 function Board:show()
-  if not self.wid or vim.api.nvim_win_is_valid(self.wid) then
+  if not self.wid or not vim.api.nvim_win_is_valid(self.wid) then
+    self.is_show = true
     local opts = self:get_win_opts()
     self.wid = vim.api.nvim_open_win(self.bid, false, opts)
-  end
-
-  self.is_show = true
-end
-
-function Board:hide()
-  if not self.wid or not self.is_show then
     return
   end
 
+  if self.is_show then
+    return
+  end
+
+  self.is_show = true
+  local opts = vim.api.nvim_win_get_config(self.wid)
+  opts.hide = false
+  vim.api.nvim_win_set_config(self.wid, opts)
+end
+
+function Board:hide()
+  if not self.wid or not self.is_show or not vim.api.nvim_win_is_valid(self.wid) then
+    self.is_show = false
+    return
+  end
+
+  self.is_show = false
   local opts = vim.api.nvim_win_get_config(self.wid)
   opts.hide = true
   vim.api.nvim_win_set_config(self.wid, opts)
-
-  self.is_show = false
 end
 
+-- TODO: add highlight
 function Board:render(list)
   if not self.bid or not vim.api.nvim_buf_is_valid(self.bid) then
     self.bid = vim.api.nvim_create_buf(false, true)

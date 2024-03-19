@@ -2,24 +2,24 @@ local Rank = require('bufpin.rank')
 local Board = require('bufpin.board')
 local utils = require('bufpin.utils')
 
----@class pin.app
----@field cur_win integer
----@field win_id integer
----@field buf_id integer
-local App = {
-  rank_list = {},
-  pins = {},
-}
+---@class bufpin.app
+local App = {}
 
 function App:new(opts)
   self.opts = opts
-  self.rank = Rank:new(10)
-  self.board = Board:new()
+  self.rank = Rank:new(opts.board.show_num)
+  self.board = Board:new(opts.board)
 
   return self
 end
 
 function App:ignore_ft(ftype)
+  for _, ft in pairs(self.opts.ignore_ft) do
+    if ftype == ft then
+      return true
+    end
+  end
+
   return false
 end
 
@@ -42,11 +42,13 @@ function App:start_monitor_bufs()
     callback = function(args)
       local event = args.event
       local fname = args.file
+      local ftype = vim.o.filetype
+
+      if self:ignore_ft(ftype) then
+        return
+      end
 
       if event == 'BufEnter' then
-        if self:ignore_ft(fname) then
-          return
-        end
         self.rank:rise(fname)
         self:render()
       end
@@ -98,11 +100,11 @@ function App:hide()
   self.board:hide()
 end
 
-function App:toogle()
+function App:toggle()
   if self.board:ishow() then
     self:hide()
   else
-    self:hide()
+    self:show()
   end
 end
 
@@ -110,12 +112,20 @@ function App:run()
   self:data_init()
   self:start_monitor_bufs()
 
-  if self.opts.show_board then
+  if self.opts.board.show then
     self:render()
     self:show()
   end
 
   self.dev = true
+end
+
+-- apis
+function App:go_to(index)
+  local file = App.rank:get_file(index)
+  if file ~= nil then
+    vim.cmd(':edit ' .. file.path)
+  end
 end
 
 return App

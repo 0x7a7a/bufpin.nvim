@@ -19,6 +19,10 @@ function Rank:init()
   self:check()
 end
 
+function Rank:get_file(index)
+  return self.list[index]
+end
+
 -- check list length
 -- delete duplicate file name
 function Rank:check()
