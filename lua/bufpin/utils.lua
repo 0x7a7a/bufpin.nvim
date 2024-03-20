@@ -38,4 +38,9 @@ function M.is_git_repo()
   return #git_files ~= 0
 end
 
+function M.log(...)
+  local p = vim.fn.stdpath('cache') .. '/bufpin/log'
+  vim.fn.writefile({ ... }, p)
+end
+
 return M

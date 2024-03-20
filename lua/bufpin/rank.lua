@@ -44,33 +44,52 @@ function Rank:rise(file_path)
     return
   end
 
-  -- search last pinned file
-  local index
+  local old_index
+  local new_index
   for k, v in pairs(self.list) do
-    if v.path == file_path and v.pinned then
-      return
+    if v.path == file_path then
+      old_index = k
+      if v.pinned then
+        return
+      end
     end
 
-    if not v.pinned then
-      index = k
-      break
+    if not v.pinned and not new_index then
+      new_index = k
     end
+  end
+
+  if old_index == new_index then
+    return
   end
 
   if #self.list == 0 then
-    index = 1
+    new_index = 1
   end
 
-  if index then
-    table.insert(self.list, index, { path = file_path, pinned = false })
+  local new_rank_item = { path = file_path, pinned = false }
+
+  -- list is full
+  if not old_index and #self.list == self.topn then
+    return
   end
 
-  self:check()
-  self:save()
-end
+  local old_rank_item = table.remove(self.list, new_index)
+  table.insert(self.list, new_index, new_rank_item)
 
-function Rank:down()
-  self:check()
+  if old_index then
+    table.remove(self.list, old_index)
+  end
+
+  for i = new_index + 1, #self.list, 1 do
+    local v = self.list[i]
+    if not v.pinned then
+      table.insert(self.list, i, old_rank_item)
+      return
+    end
+  end
+  table.insert(self.list, old_rank_item)
+
   self:save()
 end
 

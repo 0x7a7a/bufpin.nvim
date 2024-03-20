@@ -1,5 +1,4 @@
 local utils = require('bufpin.utils')
-
 local Storage = {}
 
 function Storage:new(opts)
@@ -49,8 +48,7 @@ end
 
 function Storage:save(list)
   local encode = vim.fn.json_encode(list)
-  local lines = vim.split(encode, '\n')
-  local ok = pcall(vim.fn.writefile, lines, self:get_file_path())
+  local ok = pcall(vim.fn.writefile, { encode }, self:get_file_path())
   if not ok then
     vim.notify('BufPin: failed to write file')
   end

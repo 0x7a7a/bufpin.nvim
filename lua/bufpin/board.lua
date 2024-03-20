@@ -1,7 +1,5 @@
----@class Board
 local Board = {}
 
----@return Board
 function Board:new(opts)
   return setmetatable({
     opts = opts,

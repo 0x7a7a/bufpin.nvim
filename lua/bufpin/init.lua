@@ -22,6 +22,7 @@ M.prev = function()
   M.app:prev()
 end
 
+-- TODO: next pinned
 M.next = function()
   M.app:next()
 end
@@ -35,6 +36,7 @@ M.setup = function(opts)
     -- TODO
     ignore_ft = {
       'help',
+      'neotest-summary',
     },
     rank = {
       topn = 10,

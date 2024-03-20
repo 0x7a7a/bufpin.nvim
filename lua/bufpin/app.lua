@@ -53,10 +53,6 @@ function App:start_monitor_bufs()
         self.rank:rise(fname)
         self:render()
       end
-      if event == 'BufLeave' then
-        self.rank:down()
-        self:render()
-      end
       -- TODO: if app window is closed
       -- if event == 'WinClosed' then
       -- end
@@ -123,6 +119,7 @@ function App:toggle()
   end
 end
 
+-- TODO: if file not exist
 function App:go_to(index)
   local file = self.rank:get_file(index)
   if file ~= nil then
