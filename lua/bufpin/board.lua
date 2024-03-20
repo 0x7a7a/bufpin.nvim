@@ -23,7 +23,7 @@ function Board:get_win_opts()
     style = 'minimal',
     relative = 'editor',
     focusable = false,
-    width = 20,
+    width = 25,
     height = 10,
     row = row,
     col = col,
@@ -42,8 +42,8 @@ function Board:show()
   if self.is_show then
     return
   end
-
   self.is_show = true
+
   local opts = vim.api.nvim_win_get_config(self.wid)
   opts.hide = false
   vim.api.nvim_win_set_config(self.wid, opts)
@@ -56,12 +56,12 @@ function Board:hide()
   end
 
   self.is_show = false
+
   local opts = vim.api.nvim_win_get_config(self.wid)
   opts.hide = true
   vim.api.nvim_win_set_config(self.wid, opts)
 end
 
--- TODO: add highlight
 function Board:render(list)
   if not self.bid or not vim.api.nvim_buf_is_valid(self.bid) then
     self.bid = vim.api.nvim_create_buf(false, true)
@@ -69,6 +69,9 @@ function Board:render(list)
 
   for _, info in pairs(list) do
     vim.api.nvim_buf_set_lines(self.bid, info.index, -1, true, { info.rank_txt })
+    for _, hl in pairs(info.hls) do
+      vim.api.nvim_buf_add_highlight(self.bid, -1, hl.hl_group, info.index, hl.col_start, hl.col_end)
+    end
   end
 end
 

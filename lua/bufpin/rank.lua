@@ -52,6 +52,10 @@ function Rank:rise(file_path)
   -- search last pinned file
   local index
   for k, v in pairs(self.list) do
+    if v.path == file_path and v.pinned then
+      return
+    end
+
     if not v.pinned then
       index = k
       break
@@ -73,22 +77,31 @@ function Rank:down()
   self:check()
 end
 
-function Rank:pin(index)
-  local file = self.list[index]
-  if not file or file.pinned then
-    return
+function Rank:get_pin_index(path)
+  for index, file in pairs(self.list) do
+    if file.path == path then
+      return index
+    end
   end
-
-  self.list[index].pinned = true
+  return nil
 end
 
-function Rank:unpin(index)
-  local file = self.list[index]
-  if not file or not file.pinned then
+function Rank:toggle_pin()
+  local index = Rank:get_pin_index(utils.get_current_filepath())
+  if not index then
     return
   end
 
-  self.list[index].pinned = false
+  local file = self.list[index]
+  if not file then
+    return
+  end
+
+  if file.pinned then
+    self.list[index].pinned = false
+  else
+    self.list[index].pinned = true
+  end
 end
 
 function Rank:remove(index)

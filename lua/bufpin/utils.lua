@@ -29,4 +29,8 @@ function M.get_file_name(fname)
   return vim.fn.fnamemodify(fname, ':t')
 end
 
+function M.get_current_filepath()
+  return vim.fn.expand('%:p')
+end
+
 return M

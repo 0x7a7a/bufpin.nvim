@@ -74,13 +74,27 @@ function App:get_board_list()
 
   for index, file in pairs(rank_list) do
     local fname = utils.get_file_name(file.path)
-    local icon, hl_group = utils.get_icon(fname)
-    local rank_txt = string.format(' [%d] %s %s ', index, icon, fname)
+    local icon, hl_icon = utils.get_icon(fname)
+    local hls = {}
+
+    local prefix = file.pinned and self.opts.board.pin_icon or tostring(index)
+    local rank_txt = string.format(' [%s] %s %s ', prefix, icon, fname)
+
+    if utils.get_current_filepath() == file.path then
+      local hl_cur = {
+        hl_group = 'CursorLineNr',
+        col_start = 0,
+        col_end = -1,
+      }
+      table.insert(hls, hl_cur)
+    end
+    -- FIX: testing icon in kitty affects highlighting
+    -- table.insert(hls, { hl_group = hl_icon, col_start = 5, col_end = 8 })
 
     table.insert(board_list, {
       index = index,
       rank_txt = rank_txt,
-      hl_group = hl_group,
+      hls = hls,
     })
   end
 
@@ -106,6 +120,11 @@ function App:toggle()
   else
     self:show()
   end
+end
+
+function App:toggle_pin()
+  self.rank:toggle_pin()
+  self:render()
 end
 
 function App:run()
