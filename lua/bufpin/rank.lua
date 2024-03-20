@@ -24,9 +24,8 @@ function Rank:get_file(index)
 end
 
 -- check list length
--- delete duplicate file name
+-- delete duplicate and empty file name
 function Rank:check()
-  -- unique and clean
   local set = {}
   local res = {}
   for _, v in pairs(self.list) do
@@ -86,8 +85,16 @@ function Rank:get_pin_index(path)
   return nil
 end
 
-function Rank:toggle_pin()
+function Rank:get_file_index()
   local index = Rank:get_pin_index(utils.get_current_filepath())
+  if not index then
+    return nil
+  end
+  return index
+end
+
+function Rank:toggle_pin()
+  local index = Rank:get_file_index()
   if not index then
     return
   end
@@ -104,16 +111,35 @@ function Rank:toggle_pin()
   end
 end
 
-function Rank:remove(index)
+function Rank:remove()
+  local index = Rank:get_file_index()
+  if not index then
+    return
+  end
+
   table.remove(self.list, index)
+  self:save()
+end
+
+function Rank:remove_all()
+  self.list = {}
+  self:save()
+end
+
+function Rank:save()
+  self.storage:save(self.list)
+end
+
+function Rank:async_save()
+  self:save()
+end
+
+function Rank:count()
+  return #self.list
 end
 
 function Rank:raw()
   return self.list
-end
-
-function Rank:async_save()
-  self.storage:save()
 end
 
 return Rank

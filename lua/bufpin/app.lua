@@ -122,9 +122,50 @@ function App:toggle()
   end
 end
 
+function App:go_to(index)
+  local file = App.rank:get_file(index)
+  if file ~= nil then
+    vim.cmd(':edit ' .. file.path)
+  end
+end
+
 function App:toggle_pin()
   self.rank:toggle_pin()
   self:render()
+end
+
+function App:remove()
+  self.rank:remove()
+  self:render()
+end
+
+function App:remove_all()
+  self.rank:remove_all()
+  self:render()
+end
+
+function App:prev()
+  local index = self.rank:get_file_index()
+  local last = self.rank:count()
+  if index == 1 then
+    index = last
+  else
+    index = index - 1
+  end
+
+  self:go_to(index)
+end
+
+function App:next()
+  local index = self.rank:get_file_index()
+  local last = self.rank:count()
+  if index == last then
+    index = 1
+  else
+    index = index + 1
+  end
+
+  self:go_to(index)
 end
 
 function App:run()
@@ -137,14 +178,6 @@ function App:run()
   end
 
   self.dev = true
-end
-
--- apis
-function App:go_to(index)
-  local file = App.rank:get_file(index)
-  if file ~= nil then
-    vim.cmd(':edit ' .. file.path)
-  end
 end
 
 return App

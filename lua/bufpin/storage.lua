@@ -18,6 +18,6 @@ function Storage:get_all()
   return {}
 end
 
-function Storage:save() end
+function Storage:save(list) end
 
 return Storage

@@ -5,13 +5,25 @@ local M = {}
 M.toggle = function()
   M.app:toggle()
 end
+
 M.toggle_pin = function()
   M.app:toggle_pin()
 end
-M.remove = function() end
-M.clear = function() end
-M.prev = function() end
-M.next = function() end
+
+M.remove = function()
+  M.app:remove()
+end
+
+M.remove_all = function()
+  M.app:remove_all()
+end
+
+M.prev = function()
+  M.app:prev()
+end
+M.next = function()
+  M.app:next()
+end
 M.go_to = function(index)
   M.app:go_to(index)
 end
@@ -27,6 +39,7 @@ M.setup = function(opts)
         show = true,
         show_num = 10,
         border = 'none',
+        keep_alive = false,
       },
     }
 
