@@ -59,36 +59,44 @@ function Rank:rise(file_path)
     end
   end
 
-  if old_index == new_index then
+  -- same position
+  if old_index == new_index and old_index ~= nil then
     return
   end
 
+  -- empty list
   if #self.list == 0 then
     new_index = 1
   end
 
-  local new_rank_item = { path = file_path, pinned = false }
-
-  -- list is full
+  -- full list
   if not old_index and #self.list == self.topn then
     return
   end
 
-  local old_rank_item = table.remove(self.list, new_index)
-  table.insert(self.list, new_index, new_rank_item)
+  local new_rank_item = { path = file_path, pinned = false }
 
-  if old_index then
-    table.remove(self.list, old_index)
-  end
+  -- swap position and reorder
+  if old_index and new_index then
+    local old_rank_item = table.remove(self.list, new_index)
+    table.insert(self.list, new_index, new_rank_item)
 
-  for i = new_index + 1, #self.list, 1 do
-    local v = self.list[i]
-    if not v.pinned then
-      table.insert(self.list, i, old_rank_item)
-      return
+    if old_index then
+      table.remove(self.list, old_index)
     end
+
+    -- find the nearest unpinned
+    for i = new_index + 1, #self.list, 1 do
+      local v = self.list[i]
+      if not v.pinned then
+        table.insert(self.list, i, old_rank_item)
+      end
+    end
+    new_rank_item = old_rank_item
   end
-  table.insert(self.list, old_rank_item)
+
+  -- all pinned
+  table.insert(self.list, new_rank_item)
 
   self:save()
 end
@@ -102,7 +110,7 @@ function Rank:get_pin_index(path)
   return nil
 end
 
-function Rank:get_file_index()
+function Rank:get_cur_file_index()
   local index = self:get_pin_index(utils.get_current_filepath())
   if not index then
     return nil
@@ -111,7 +119,7 @@ function Rank:get_file_index()
 end
 
 function Rank:toggle_pin()
-  local index = self:get_file_index()
+  local index = self:get_pin_index(utils.get_current_filepath())
   if not index then
     return
   end
@@ -126,14 +134,21 @@ function Rank:toggle_pin()
   else
     self.list[index].pinned = true
   end
+
+  self:save()
 end
 
 function Rank:remove()
-  local index = self:get_file_index()
+  local index = self:get_cur_file_index()
   if not index then
     return
   end
 
+  table.remove(self.list, index)
+  self:save()
+end
+
+function Rank:remove_by_index(index)
   table.remove(self.list, index)
   self:save()
 end
@@ -149,7 +164,40 @@ end
 
 function Rank:async_save()
   self:save()
-  -- TODO: save in ExitPre event
+end
+
+function Rank:prev_pinned_index()
+  local index = self:get_cur_file_index() or 1
+  for i = index - 1, 1, -1 do
+    if self.list[i].pinned then
+      return i
+    end
+  end
+
+  for i = #self.list, index, -1 do
+    if self.list[i].pinned then
+      return i
+    end
+  end
+
+  return nil
+end
+
+function Rank:next_pinned_index()
+  local index = self:get_cur_file_index() or 1
+  for i = index + 1, #self.list, 1 do
+    if self.list[i].pinned then
+      return i
+    end
+  end
+
+  for i = index - 1, 1, -1 do
+    if self.list[i].pinned then
+      return i
+    end
+  end
+
+  return nil
 end
 
 function Rank:count()

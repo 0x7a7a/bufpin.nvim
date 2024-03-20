@@ -18,13 +18,12 @@ M.remove_all = function()
   M.app:remove_all()
 end
 
-M.prev = function()
-  M.app:prev()
+M.prev_pinned = function()
+  M.app:prev_pinned()
 end
 
--- TODO: next pinned
-M.next = function()
-  M.app:next()
+M.next_pinned = function()
+  M.app:next_pinned()
 end
 
 M.go_to = function(index)

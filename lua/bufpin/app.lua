@@ -119,9 +119,14 @@ function App:toggle()
   end
 end
 
--- TODO: if file not exist
 function App:go_to(index)
   local file = self.rank:get_file(index)
+
+  if vim.fn.filereadable(file.path) == 0 then
+    self.rank:remove_by_index(index)
+    return
+  end
+
   if file ~= nil then
     vim.cmd(':edit ' .. file.path)
   end
@@ -142,25 +147,19 @@ function App:remove_all()
   self:render()
 end
 
-function App:prev()
-  local index = self.rank:get_file_index()
-  local last = self.rank:count()
-  if index == 1 then
-    index = last
-  else
-    index = index - 1
+function App:prev_pinned()
+  local index = self.rank:prev_pinned_index()
+  if not index then
+    return
   end
 
   self:go_to(index)
 end
 
-function App:next()
-  local index = self.rank:get_file_index()
-  local last = self.rank:count()
-  if index == last then
-    index = 1
-  else
-    index = index + 1
+function App:next_pinned()
+  local index = self.rank:next_pinned_index()
+  if not index then
+    return
   end
 
   self:go_to(index)
