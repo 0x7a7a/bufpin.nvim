@@ -40,8 +40,8 @@ M.setup = function(opts)
       topn = 10,
     },
     storage = {
-      dir = vim.fn.stdpath('cache'),
-      git_branch = false,
+      dir = vim.fn.stdpath('cache') .. '/bufpin/',
+      git_branch = true,
     },
     board = {
       pin_icon = '󰐃',

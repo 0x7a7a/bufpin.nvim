@@ -124,7 +124,7 @@ function App:toggle()
 end
 
 function App:go_to(index)
-  local file = App.rank:get_file(index)
+  local file = self.rank:get_file(index)
   if file ~= nil then
     vim.cmd(':edit ' .. file.path)
   end

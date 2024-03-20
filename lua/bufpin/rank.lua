@@ -66,10 +66,12 @@ function Rank:rise(file_path)
   end
 
   self:check()
+  self:save()
 end
 
 function Rank:down()
   self:check()
+  self:save()
 end
 
 function Rank:get_pin_index(path)
@@ -82,7 +84,7 @@ function Rank:get_pin_index(path)
 end
 
 function Rank:get_file_index()
-  local index = Rank:get_pin_index(utils.get_current_filepath())
+  local index = self:get_pin_index(utils.get_current_filepath())
   if not index then
     return nil
   end
@@ -90,7 +92,7 @@ function Rank:get_file_index()
 end
 
 function Rank:toggle_pin()
-  local index = Rank:get_file_index()
+  local index = self:get_file_index()
   if not index then
     return
   end
@@ -108,7 +110,7 @@ function Rank:toggle_pin()
 end
 
 function Rank:remove()
-  local index = Rank:get_file_index()
+  local index = self:get_file_index()
   if not index then
     return
   end

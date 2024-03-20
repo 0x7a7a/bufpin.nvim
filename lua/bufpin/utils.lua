@@ -33,4 +33,9 @@ function M.get_current_filepath()
   return vim.fn.expand('%:p')
 end
 
+function M.is_git_repo()
+  local git_files = vim.fs.find('.git', { upward = true, stop = vim.loop.os_homedir() })
+  return #git_files ~= 0
+end
+
 return M
