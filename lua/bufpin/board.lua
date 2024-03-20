@@ -3,11 +3,10 @@ local Board = {}
 
 ---@return Board
 function Board:new(opts)
-  self.padding = 0
-  self.is_show = false
-  self.opts = opts
-
-  return self
+  return setmetatable({
+    opts = opts,
+    is_show = false,
+  }, { __index = self })
 end
 
 function Board:ishow()
@@ -24,7 +23,7 @@ function Board:get_win_opts()
     relative = 'editor',
     focusable = false,
     width = 25,
-    height = 10,
+    height = 12,
     row = row,
     col = col,
     border = self.opts.border,

@@ -1,17 +1,13 @@
-local Storage = require('bufpin.storage')
 local utils = require('bufpin.utils')
 
-local Rank = {
-  list = {},
-}
+local Rank = {}
 
-function Rank:new(topn)
-  self.topn = topn
-  self.storage = Storage:new()
-
-  self:async_save()
-
-  return self
+function Rank:new(opts, storage)
+  return setmetatable({
+    topn = opts.topn,
+    storage = storage,
+    list = {},
+  }, { __index = self })
 end
 
 function Rank:init()
@@ -132,6 +128,7 @@ end
 
 function Rank:async_save()
   self:save()
+  -- TODO: save in ExitPre event
 end
 
 function Rank:count()

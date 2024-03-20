@@ -1,16 +1,21 @@
-local Rank = require('bufpin.rank')
-local Board = require('bufpin.board')
 local utils = require('bufpin.utils')
 
----@class bufpin.app
 local App = {}
 
 function App:new(opts)
-  self.opts = opts
-  self.rank = Rank:new(opts.board.show_num)
-  self.board = Board:new(opts.board)
+  local Rank = require('bufpin.rank')
+  local Board = require('bufpin.board')
+  local Storage = require('bufpin.storage')
 
-  return self
+  local storage = Storage:new(opts.storage)
+  local rank = Rank:new(opts.rank, storage)
+  local board = Board:new(opts.rank)
+
+  return setmetatable({
+    opts = opts,
+    rank = rank,
+    board = board,
+  }, { __index = self })
 end
 
 function App:ignore_ft(ftype)
@@ -28,10 +33,6 @@ function App:data_init()
 end
 
 function App:start_monitor_bufs()
-  if self.dev then
-    vim.api.nvim_del_autocmd(self.aucmd_id)
-    self.aucmd_id = nil
-  end
   if self.augroup_id and self.aucmd_id then
     return
   end
@@ -176,8 +177,6 @@ function App:run()
     self:render()
     self:show()
   end
-
-  self.dev = true
 end
 
 return App
