@@ -40,39 +40,33 @@ function Rank:check()
 end
 
 function Rank:rise(rise_file)
-  if #rise_file == 0 then
-    return
-  end
-
-  local wait_insert
   for k, v in pairs(self.list) do
-    if v.path == rise_file then
-      wait_insert = v
-      if k == 1 or v.pinned then
-        return
-      end
+    if v.path == rise_file and (v.pinned or k == 1) then
+      return
     end
   end
 
-  local new_list = {}
-  wait_insert = wait_insert or self.storage:new_item(rise_file)
-  for _, v in pairs(self.list) do
-    if v.path ~= rise_file then
-      if v.pinned then
-        table.insert(new_list, v)
-      else
-        table.insert(new_list, wait_insert)
-        wait_insert = v
-      end
+  local wait_insert = self.storage:new_item(rise_file)
+  for i = 1, #self.list do
+    local v = self.list[i]
+    -- swap
+    if v.path == rise_file and wait_insert then
+      table.remove(self.list, i)
+      table.insert(self.list, i, wait_insert)
+      wait_insert = nil
+      break
+    end
+
+    if not v.pinned then
+      table.insert(self.list, i, wait_insert)
+      wait_insert = table.remove(self.list, i + 1)
     end
   end
-  table.insert(new_list, wait_insert)
 
-  while #new_list > self.topn do
-    table.remove(new_list)
+  if wait_insert then
+    table.insert(self.list, wait_insert)
   end
 
-  self.list = new_list
   self:save()
 end
 

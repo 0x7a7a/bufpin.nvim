@@ -38,7 +38,7 @@ function App:start_monitor_bufs()
   end
 
   local gid = vim.api.nvim_create_augroup('BufPin', {})
-  local cid = vim.api.nvim_create_autocmd({ 'BufEnter', 'BufLeave' }, {
+  local cid = vim.api.nvim_create_autocmd({ 'BufEnter' }, {
     group = gid,
     callback = function(args)
       local event = args.event
@@ -124,6 +124,10 @@ end
 
 function App:go_to(index)
   local file = self.rank:get_file(index)
+
+  if not file then
+    return
+  end
 
   if vim.fn.filereadable(file.path) == 0 then
     self.rank:remove_by_index(index)
