@@ -49,15 +49,14 @@ function App:start_monitor_bufs()
         return
       end
 
+      if #fname == 0 then
+        return
+      end
+
       if event == 'BufEnter' then
         self.rank:rise(fname)
         self:render()
       end
-      -- TODO: if app window is closed
-      -- if event == 'WinClosed' then
-      -- end
-
-      -- vim.notify(vim.inspect(self.rank:raw()))
     end,
   })
 
@@ -85,7 +84,7 @@ function App:get_board_list()
       }
       table.insert(hls, hl_cur)
     end
-    -- FIX: testing icon in kitty affects highlighting
+    -- FIX: Icon in kitty affects highlighting
     -- table.insert(hls, { hl_group = hl_icon, col_start = 5, col_end = 8 })
 
     table.insert(board_list, {
@@ -117,6 +116,10 @@ function App:toggle()
   else
     self:show()
   end
+end
+
+function App:close()
+  self:hide()
 end
 
 function App:go_to(index)

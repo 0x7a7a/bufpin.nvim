@@ -2,7 +2,6 @@ local webdevicons = require('nvim-web-devicons')
 
 local M = {}
 
----@param arr table
 function M.unique(arr)
   local set = {}
   local res = {}
@@ -17,7 +16,6 @@ function M.unique(arr)
   return res
 end
 
----@param fname string
 function M.get_icon(fname)
   local ext = vim.fn.fnamemodify(fname, ':e')
   local icon, hl_group = webdevicons.get_icon(fname, ext, { default = true })
@@ -41,6 +39,10 @@ end
 function M.log(...)
   local p = vim.fn.stdpath('cache') .. '/bufpin/log'
   vim.fn.writefile({ ... }, p)
+end
+
+function M.encode(file_path)
+  return string.gsub(file_path, '/', '%%')
 end
 
 return M

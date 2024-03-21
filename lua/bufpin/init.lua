@@ -6,6 +6,10 @@ M.toggle = function()
   M.app:toggle()
 end
 
+M.close = function()
+  M.app:close()
+end
+
 M.toggle_pin = function()
   M.app:toggle_pin()
 end
@@ -35,6 +39,7 @@ M.setup = function(opts)
     -- TODO
     ignore_ft = {
       'help',
+      'http',
       'neotest-summary',
     },
     rank = {
@@ -46,7 +51,7 @@ M.setup = function(opts)
     },
     board = {
       pin_icon = '󰐃',
-      show = true,
+      show = false,
       border = 'none',
       -- TODO
       show_time = 'aways', -- aways or buf_enter

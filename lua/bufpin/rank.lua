@@ -19,8 +19,8 @@ function Rank:get_file(index)
   return self.list[index]
 end
 
--- check list length
--- delete duplicate and empty file name
+-- Check list length
+-- Delete duplicate and empty file name
 function Rank:check()
   local set = {}
   local res = {}
@@ -39,65 +39,40 @@ function Rank:check()
   end
 end
 
-function Rank:rise(file_path)
-  if #file_path == 0 then
+function Rank:rise(rise_file)
+  if #rise_file == 0 then
     return
   end
 
-  local old_index
-  local new_index
+  local wait_insert
   for k, v in pairs(self.list) do
-    if v.path == file_path then
-      old_index = k
-      if v.pinned then
+    if v.path == rise_file then
+      wait_insert = v
+      if k == 1 or v.pinned then
         return
       end
     end
-
-    if not v.pinned and not new_index then
-      new_index = k
-    end
   end
 
-  -- same position
-  if old_index == new_index and old_index ~= nil then
-    return
-  end
-
-  -- empty list
-  if #self.list == 0 then
-    new_index = 1
-  end
-
-  -- full list
-  if not old_index and #self.list == self.topn then
-    return
-  end
-
-  local new_rank_item = { path = file_path, pinned = false }
-
-  -- swap position and reorder
-  if old_index and new_index then
-    local old_rank_item = table.remove(self.list, new_index)
-    table.insert(self.list, new_index, new_rank_item)
-
-    if old_index then
-      table.remove(self.list, old_index)
-    end
-
-    -- find the nearest unpinned
-    for i = new_index + 1, #self.list, 1 do
-      local v = self.list[i]
-      if not v.pinned then
-        table.insert(self.list, i, old_rank_item)
+  local new_list = {}
+  wait_insert = wait_insert or self.storage:new_item(rise_file)
+  for _, v in pairs(self.list) do
+    if v.path ~= rise_file then
+      if v.pinned then
+        table.insert(new_list, v)
+      else
+        table.insert(new_list, wait_insert)
+        wait_insert = v
       end
     end
-    new_rank_item = old_rank_item
+  end
+  table.insert(new_list, wait_insert)
+
+  while #new_list > self.topn do
+    table.remove(new_list)
   end
 
-  -- all pinned
-  table.insert(self.list, new_rank_item)
-
+  self.list = new_list
   self:save()
 end
 
@@ -129,11 +104,7 @@ function Rank:toggle_pin()
     return
   end
 
-  if file.pinned then
-    self.list[index].pinned = false
-  else
-    self.list[index].pinned = true
-  end
+  self.list[index].pinned = not self.list[index].pinned
 
   self:save()
 end

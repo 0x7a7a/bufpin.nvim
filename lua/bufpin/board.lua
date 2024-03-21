@@ -11,7 +11,7 @@ function Board:ishow()
   return self.is_show
 end
 
--- TODO: the width should be more flexible when secondary directories
+-- TODO: The width should be more flexible when secondary directories
 function Board:get_win_opts()
   local row = vim.o.lines / 2 - 20
   local col = vim.o.columns
@@ -28,6 +28,7 @@ function Board:get_win_opts()
   }
 end
 
+-- TODO: Recalculate window position
 function Board:show()
   if not self.wid or not vim.api.nvim_win_is_valid(self.wid) then
     self.is_show = true

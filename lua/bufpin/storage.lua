@@ -15,7 +15,7 @@ function Storage:get_file_path()
     vim.fn.mkdir(self.dir, 'p')
   end
 
-  local fpath = self.dir .. vim.base64.encode(cwd)
+  local fpath = self.dir .. utils.encode(cwd)
 
   if self.git_branch and utils.is_git_repo() then
     local result = vim.fn.system({ 'git', 'symbolic-ref', '--short', 'HEAD' })
@@ -44,6 +44,10 @@ function Storage:get_all()
     return {}
   end
   return list
+end
+
+function Storage:new_item(path)
+  return { path = path, pinned = false }
 end
 
 function Storage:save(list)
