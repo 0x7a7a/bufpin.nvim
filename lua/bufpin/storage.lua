@@ -46,7 +46,6 @@ function Storage:get_all()
   end
 
   -- for test
-  table.insert(list, { path = 'Iamaverylongfilenamefortest.go', pinned = false })
   table.insert(list, { path = 'DIRA/Iamsamefile.zig', pinned = false })
   table.insert(list, { path = 'DIRB/Iamsamefile.zig', pinned = false })
 

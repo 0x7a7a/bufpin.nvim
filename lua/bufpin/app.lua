@@ -9,7 +9,7 @@ function App:new(opts)
 
   local storage = Storage:new(opts.storage)
   local rank = Rank:new(opts.rank, storage)
-  local board = Board:new(opts.rank)
+  local board = Board:new(opts.board)
 
   return setmetatable({
     opts = opts,

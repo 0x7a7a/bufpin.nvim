@@ -23,10 +23,15 @@ end
 
 -- TODO: The width should be more flexible when secondary directories
 function Board:get_win_opts()
+  local border = self.opts.border
   local offset = 20
   local winheight = vim.fn.winheight(0)
   local row = 2
   local col = vim.fn.winwidth(0) - self.width
+
+  if border ~= 'none' and border ~= nil then
+    col = col - 2
+  end
 
   if math.floor(winheight / 2) > offset then
     row = math.floor(vim.fn.winheight(0) / 2) - 20
@@ -41,7 +46,7 @@ function Board:get_win_opts()
     height = self.height,
     row = row,
     col = col,
-    border = self.opts.border,
+    border = border,
   }
 end
 
