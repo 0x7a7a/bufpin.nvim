@@ -21,7 +21,6 @@ function Board:ishow()
   return self.is_show
 end
 
--- TODO: The width should be more flexible when secondary directories
 function Board:get_win_opts()
   local border = self.opts.border
   local offset = 20
@@ -63,7 +62,6 @@ function Board:win_exist()
   return self.wid and vim.api.nvim_win_is_valid(self.wid)
 end
 
--- TODO: Recalculate window position
 function Board:show()
   if not self:win_exist() then
     self.is_show = true

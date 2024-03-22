@@ -69,10 +69,26 @@ function App:get_board_list()
   local board_list = {}
   local max_fname_len = 0
 
+  --check files with same name
+  local unique_set = {}
+  local unique_res = {}
+  for _, v in pairs(rank_list) do
+    local fname = utils.get_file_name(v.path)
+    if not unique_set[fname] then
+      unique_set[fname] = true
+    else
+      unique_res[fname] = true
+    end
+  end
+
   for index, file in pairs(rank_list) do
     local fname = utils.get_file_name(file.path)
     local icon, hl_icon = utils.get_icon(fname)
     local hls = {}
+
+    if unique_res[fname] then
+      fname = utils.get_file_name(file.path, true)
+    end
 
     local opt_max_width = self.opts.board.max_filename
     if #fname > opt_max_width then
@@ -100,7 +116,7 @@ function App:get_board_list()
       }
       table.insert(hls, hl_cur)
     end
-    -- FIX: Icon in kitty affects highlighting
+    -- FIXME: Icon in kitty affects highlighting
     -- table.insert(hls, { hl_group = hl_icon, col_start = 5, col_end = 8 })
 
     table.insert(board_list, {
@@ -199,10 +215,6 @@ function App:run()
   self:data_init()
   self:start_monitor_bufs()
   self:render()
-
-  if self.opts.board.show then
-    self:show()
-  end
 end
 
 return App

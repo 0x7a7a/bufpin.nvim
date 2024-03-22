@@ -36,7 +36,6 @@ end
 
 M.setup = function(opts)
   opts = {
-    -- TODO
     ignore_ft = {
       'help',
       'http',
@@ -51,13 +50,8 @@ M.setup = function(opts)
     },
     board = {
       pin_icon = '󰐃',
-      show = false,
       border = 'none',
       max_filename = 20,
-      -- TODO
-      show_time = 'aways', -- aways or buf_enter
-      -- TODO
-      keep_alive = false,
     },
   }
 
