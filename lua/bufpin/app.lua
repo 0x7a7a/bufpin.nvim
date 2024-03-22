@@ -142,6 +142,10 @@ function App:close()
 end
 
 function App:go_to(index)
+  if index == 0 then
+    index = 10
+  end
+
   local file = self.rank:get_file(index)
 
   if not file then
