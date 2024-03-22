@@ -23,12 +23,13 @@ end
 
 -- TODO: The width should be more flexible when secondary directories
 function Board:get_win_opts()
-  local row = vim.o.lines / 2 - 20
-  local col = vim.o.columns
+  local row = vim.fn.winheight(0) / 2 - 20
+  local col = vim.fn.winwidth(0) - self.width
 
   return {
     style = 'minimal',
-    relative = 'editor',
+    relative = 'win',
+    win = 0,
     focusable = false,
     width = self.width,
     height = self.height,
@@ -61,12 +62,13 @@ function Board:show()
     return
   end
 
-  if self.is_show then
+  if self:ishow() then
     return
   end
+
   self.is_show = true
 
-  local opts = vim.api.nvim_win_get_config(self.wid)
+  local opts = self:get_win_opts()
   opts.hide = false
   vim.api.nvim_win_set_config(self.wid, opts)
 end

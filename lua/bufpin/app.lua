@@ -83,7 +83,13 @@ function App:get_board_list()
       max_fname_len = #fname
     end
 
-    local prefix = file.pinned and self.opts.board.pin_icon or tostring(index)
+    local prefix = tostring(index)
+    if index == 10 then
+      prefix = '0'
+    end
+    if file.pinned then
+      prefix = self.opts.board.pin_icon
+    end
     local rank_txt = string.format(' [%s] %s %s ', prefix, icon, fname)
 
     if utils.get_current_filepath() == file.path then
