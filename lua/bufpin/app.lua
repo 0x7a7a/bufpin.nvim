@@ -67,11 +67,21 @@ end
 function App:get_board_list()
   local rank_list = self.rank:raw()
   local board_list = {}
+  local max_fname_len = 0
 
   for index, file in pairs(rank_list) do
     local fname = utils.get_file_name(file.path)
     local icon, hl_icon = utils.get_icon(fname)
     local hls = {}
+
+    local opt_max_width = self.opts.board.max_filename
+    if #fname > opt_max_width then
+      fname = string.sub(fname, 1, opt_max_width)
+      fname = fname .. '...'
+    end
+    if #fname > max_fname_len then
+      max_fname_len = #fname
+    end
 
     local prefix = file.pinned and self.opts.board.pin_icon or tostring(index)
     local rank_txt = string.format(' [%s] %s %s ', prefix, icon, fname)
@@ -93,6 +103,9 @@ function App:get_board_list()
       hls = hls,
     })
   end
+
+  self.board:set_width(max_fname_len)
+  self.board:set_height(#rank_list)
 
   return board_list
 end
@@ -131,12 +144,12 @@ function App:go_to(index)
 
   if vim.fn.filereadable(file.path) == 0 then
     self.rank:remove_by_index(index)
+    utils.notify(string.format('%s does not exist, rank record deleted.', file.path))
+    self:render()
     return
   end
 
-  if file ~= nil then
-    vim.cmd(':edit ' .. file.path)
-  end
+  vim.cmd(':edit ' .. file.path)
 end
 
 function App:toggle_pin()
@@ -175,9 +188,9 @@ end
 function App:run()
   self:data_init()
   self:start_monitor_bufs()
+  self:render()
 
   if self.opts.board.show then
-    self:render()
     self:show()
   end
 end

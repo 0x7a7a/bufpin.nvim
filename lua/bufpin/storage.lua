@@ -35,14 +35,21 @@ function Storage:get_all()
 
   local ok, content = pcall(vim.fn.readfile, fpath)
   if not ok or #content == 0 then
+    utils.notify(string.format('failed to read rank file: %s', fpath))
     return {}
   end
 
   local ok, list = pcall(vim.fn.json_decode, content)
   if not ok then
-    vim.notify('BufPin: json decode error')
+    utils.notify('json decode error')
     return {}
   end
+
+  -- for test
+  table.insert(list, { path = 'Iamaverylongfilenamefortest.go', pinned = false })
+  table.insert(list, { path = 'DIRA/Iamsamefile.zig', pinned = false })
+  table.insert(list, { path = 'DIRB/Iamsamefile.zig', pinned = false })
+
   return list
 end
 

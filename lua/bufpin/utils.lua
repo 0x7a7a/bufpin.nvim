@@ -41,6 +41,10 @@ function M.log(...)
   vim.fn.writefile({ ... }, p)
 end
 
+function M.notify(msg)
+  vim.notify(string.format('[bufpin.nvim]: %s', msg))
+end
+
 function M.encode(file_path)
   return string.gsub(file_path, '/', '%%')
 end
