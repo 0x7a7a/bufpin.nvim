@@ -38,7 +38,7 @@ function App:start_monitor_bufs()
   end
 
   local gid = vim.api.nvim_create_augroup('BufPin', {})
-  local cid = vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+  local cid = vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost' }, {
     group = gid,
     callback = function(args)
       local event = args.event
@@ -53,9 +53,17 @@ function App:start_monitor_bufs()
         return
       end
 
+      if event == 'BufWritePost' or event == 'InsertLeave' then
+        if self.board:ishow() then
+          self:render()
+        end
+      end
+
       if event == 'BufEnter' then
         self.rank:rise(fname)
-        self:render()
+        if self.board:ishow() then
+          self:render()
+        end
       end
     end,
   })
@@ -81,9 +89,16 @@ function App:get_board_list()
     end
   end
 
+  local unsaved_files = {}
+  for _, buf in pairs(vim.fn.getbufinfo({ buflisted = 1 })) do
+    if buf.changed == 1 then
+      unsaved_files[buf.name] = true
+    end
+  end
+
   for index, file in pairs(rank_list) do
     local fname = utils.get_file_name(file.path)
-    local icon, hl_icon = utils.get_icon(fname)
+    local icon, _ = utils.get_icon(fname)
     local hls = {}
 
     if unique_res[fname] then
@@ -106,7 +121,13 @@ function App:get_board_list()
     if file.pinned then
       prefix = self.opts.board.pin_icon
     end
-    local rank_txt = string.format(' [%s] %s %s ', prefix, icon, fname)
+
+    local unsaved = ' '
+    if unsaved_files[file.path] then
+      unsaved = '*'
+    end
+
+    local rank_txt = string.format('%s[%s] %s %s ', unsaved, prefix, icon, fname)
 
     if utils.get_current_filepath() == file.path then
       local hl_cur = {
@@ -116,8 +137,6 @@ function App:get_board_list()
       }
       table.insert(hls, hl_cur)
     end
-    -- FIXME: Icon in kitty affects highlighting
-    -- table.insert(hls, { hl_group = hl_icon, col_start = 5, col_end = 8 })
 
     table.insert(board_list, {
       index = index,
@@ -138,6 +157,7 @@ function App:render()
 end
 
 function App:show()
+  self:render()
   self.board:show()
 end
 
@@ -180,17 +200,23 @@ end
 
 function App:toggle_pin()
   self.rank:toggle_pin()
-  self:render()
+  if self.board:ishow() then
+    self:render()
+  end
 end
 
 function App:remove()
   self.rank:remove()
-  self:render()
+  if self.board:ishow() then
+    self:render()
+  end
 end
 
 function App:remove_all()
   self.rank:remove_all()
-  self:render()
+  if self.board:ishow() then
+    self:render()
+  end
 end
 
 function App:prev_pinned()

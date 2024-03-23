@@ -34,6 +34,7 @@ M.go_to = function(index)
   M.app:go_to(index)
 end
 
+-- TODO: A Config class may be required
 M.setup = function(opts)
   opts = {
     ignore_ft = {

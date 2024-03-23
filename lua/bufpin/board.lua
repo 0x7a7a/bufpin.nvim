@@ -107,6 +107,13 @@ function Board:render(list)
     end
   end
 
+  if #list == 0 then
+    local empty = ' BufPin is empty '
+    vim.api.nvim_buf_set_lines(self.bid, 1, -1, true, { empty })
+    self.width = #empty
+    self.height = 3
+  end
+
   self:reset_win()
 end
 
