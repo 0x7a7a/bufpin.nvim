@@ -1,3 +1,4 @@
+local utils = require('bufpin.utils')
 local Board = {}
 
 function Board:new(opts)
@@ -36,8 +37,21 @@ function Board:get_win_opts()
     col = col - 2
   end
 
-  local win_height = vim.fn.winheight(0)
-  local row = math.floor((win_height - self.height) / 2)
+  local row, ok
+  local opts_height = self.opts.float_height
+  if type(opts_height) == 'number' then
+    row = opts_height
+  end
+
+  if type(opts_height) == 'function' then
+    local func = self.opts.float_height
+    ok, row = pcall(func, self.height)
+  end
+  if not ok or row == nil then
+    utils.notify('call float_height function err,use default option')
+    local win_height = vim.fn.winheight(0)
+    row = math.floor((win_height - self.height) / 2)
+  end
 
   local opts = {
     style = 'minimal',

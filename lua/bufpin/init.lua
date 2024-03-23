@@ -47,8 +47,14 @@ M.setup = function(opts)
     board = {
       mode = 'follow', -- follow or fixed
       pin_icon = '󰐃',
-      border = 'none',
+      border = 'none', -- single / double / rounder /none
       max_filename = 20,
+      -- border_height is automatically calculated based on the displayed content.
+      float_height = function(border_height)
+        -- the default is vertical-center
+        local win_height = vim.fn.winheight(0)
+        return math.floor((win_height - border_height) / 2)
+      end,
     },
     ignore_ft = {
       'help',
