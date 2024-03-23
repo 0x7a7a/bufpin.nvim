@@ -55,10 +55,10 @@ function M.notify(msg)
   vim.notify(string.format('[bufpin.nvim]: %s', msg))
 end
 
----@param file_path string
+---@param fpath string
 ---@return string
-function M.encode(file_path)
-  local path, _ = string.gsub(file_path, '/', '%%')
+function M.encode(fpath)
+  local path, _ = string.gsub(fpath, '/', '%%')
   return path
 end
 

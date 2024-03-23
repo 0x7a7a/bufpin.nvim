@@ -23,18 +23,13 @@ end
 
 function Board:get_win_opts()
   local border = self.opts.border
-  local offset = 20
-  local winheight = vim.fn.winheight(0)
-  local row = 2
   local col = vim.fn.winwidth(0) - self.width
-
   if border ~= 'none' and border ~= nil then
     col = col - 2
   end
 
-  if math.floor(winheight / 2) > offset then
-    row = math.floor(vim.fn.winheight(0) / 2) - 20
-  end
+  local win_height = vim.fn.winheight(0)
+  local row = math.floor((win_height - self.height) / 2)
 
   return {
     style = 'minimal',
@@ -114,7 +109,9 @@ function Board:render(list)
     self.height = 3
   end
 
-  self:reset_win()
+  if self.opts.mode == 'follow' then
+    self:reset_win()
+  end
 end
 
 function Board:destory()

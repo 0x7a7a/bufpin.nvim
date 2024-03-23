@@ -37,11 +37,6 @@ end
 -- TODO: A Config class may be required
 M.setup = function(opts)
   opts = {
-    ignore_ft = {
-      'help',
-      'http',
-      'neotest-summary',
-    },
     rank = {
       topn = 10,
     },
@@ -50,9 +45,16 @@ M.setup = function(opts)
       git_branch = true,
     },
     board = {
+      mode = 'follow', -- follow or fixed
       pin_icon = '󰐃',
       border = 'none',
       max_filename = 20,
+    },
+    ignore_ft = {
+      'help',
+      'http',
+      'mason',
+      'neotest-summary',
     },
   }
 
