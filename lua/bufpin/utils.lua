@@ -14,17 +14,27 @@ function M.get_icon(fname)
 end
 
 ---Get the tail filename or with parent dir
----@param fname string
+---@param fpath string
 ---@param parent boolean? only file name
 ---@return string
-function M.get_file_name(fname, parent)
-  parent = parent or false
-  local fpath = vim.fn.fnamemodify(fname, ':t')
-  if parent then
-    local ppath = vim.fn.fnamemodify(fname, ':h')
-    fpath = ppath .. '/' .. fpath
+function M.get_file_name(fpath, parent)
+  if #fpath == 0 then
+    return ''
   end
-  return fpath
+
+  local delimiter = package.config:sub(1, 1)
+  local pattern = '[^' .. delimiter .. ']+'
+
+  local dirs = {}
+  for p in string.gmatch(fpath, pattern) do
+    table.insert(dirs, p)
+  end
+
+  parent = parent or false
+  if parent and #dirs > 2 then
+    return dirs[#dirs - 1] .. '/' .. dirs[#dirs]
+  end
+  return dirs[#dirs]
 end
 
 ---Absolute path to the current buf file
