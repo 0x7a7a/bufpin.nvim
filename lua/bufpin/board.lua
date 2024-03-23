@@ -31,7 +31,6 @@ function Board:get_win_opts()
   if self:is_folow_mode() then
     col = vim.fn.winwidth(0) - self.width
   end
-
   local border = self.opts.border
   if border ~= 'none' and border ~= nil then
     col = col - 2
@@ -113,9 +112,13 @@ function Board:hide()
 
   self.is_show = false
 
-  local opts = vim.api.nvim_win_get_config(self.wid)
-  opts.hide = true
-  vim.api.nvim_win_set_config(self.wid, opts)
+  if utils.is_stable_version() then
+    vim.api.nvim_win_close(self.wid, true)
+  else
+    local opts = vim.api.nvim_win_get_config(self.wid)
+    opts.hide = true
+    vim.api.nvim_win_set_config(self.wid, opts)
+  end
 end
 
 function Board:render(list)

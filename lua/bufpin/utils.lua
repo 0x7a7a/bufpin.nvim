@@ -69,4 +69,11 @@ function M.log(...)
   vim.fn.writefile({ ... }, p)
 end
 
+--- some api are not available in the stable version.
+---@return boolean
+function M.is_stable_version()
+  local ver = vim.version()
+  return ver.minor < 10
+end
+
 return M
