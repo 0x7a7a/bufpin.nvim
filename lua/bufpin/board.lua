@@ -21,9 +21,17 @@ function Board:ishow()
   return self.is_show
 end
 
+function Board:is_folow_mode()
+  return self.opts.mode == 'follow'
+end
+
 function Board:get_win_opts()
+  local col = vim.o.columns - self.width
+  if self:is_folow_mode() then
+    col = vim.fn.winwidth(0) - self.width
+  end
+
   local border = self.opts.border
-  local col = vim.fn.winwidth(0) - self.width
   if border ~= 'none' and border ~= nil then
     col = col - 2
   end
@@ -31,10 +39,9 @@ function Board:get_win_opts()
   local win_height = vim.fn.winheight(0)
   local row = math.floor((win_height - self.height) / 2)
 
-  return {
+  local opts = {
     style = 'minimal',
-    relative = 'win',
-    win = 0,
+    relative = 'editor',
     focusable = false,
     width = self.width,
     height = self.height,
@@ -42,6 +49,13 @@ function Board:get_win_opts()
     col = col,
     border = border,
   }
+
+  if self:is_folow_mode() then
+    opts.relative = 'win'
+    opts.win = 0
+  end
+
+  return opts
 end
 
 function Board:reset_win()
@@ -109,7 +123,7 @@ function Board:render(list)
     self.height = 3
   end
 
-  if self.opts.mode == 'follow' then
+  if self:is_folow_mode() then
     self:reset_win()
   end
 end
