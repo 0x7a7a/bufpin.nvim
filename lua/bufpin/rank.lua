@@ -4,7 +4,7 @@ local Rank = {}
 
 function Rank:new(opts, storage)
   return setmetatable({
-    topn = opts.topn,
+    num = opts.num,
     storage = storage,
     list = {},
   }, { __index = self })
@@ -34,7 +34,7 @@ function Rank:check()
   end
   self.list = res
 
-  while #self.list > self.topn do
+  while #self.list > self.num do
     table.remove(self.list)
   end
 end
