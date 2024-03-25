@@ -165,10 +165,6 @@ function Rank:next_pinned_index()
   return nil
 end
 
-function Rank:count()
-  return #self.list
-end
-
 function Rank:raw()
   return self.list
 end
