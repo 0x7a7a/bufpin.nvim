@@ -46,7 +46,8 @@ function Board:get_win_opts()
     local func = self.opts.float_height
     ok, row = pcall(func, self.height)
   end
-  if not ok or row == nil then
+
+  if not ok and row == nil then
     utils.notify('call float_height function err,use default option')
     local win_height = vim.fn.winheight(0)
     row = math.floor((win_height - self.height) / 2)

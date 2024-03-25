@@ -41,6 +41,7 @@ return {
     Keymap('n', '<leader>pa', function() bufpin.remove_all() end, { desc = 'BufPin: remove all entry' })
     Keymap('n', '<A-h>', function() bufpin.prev_pinned() end, { desc = 'BufPin: toggle pin' })
     Keymap('n', '<A-l>', function() bufpin.next_pinned() end, { desc = 'BufPin: toggle pin' })
+    -- stylua: ignore end
   end
 }
 ```
@@ -63,6 +64,7 @@ All APIs can be found in[lua/bufpin/init.lua](https://github.com/0x7a7a/bufpin.n
     border = 'none', -- single / double / rounder /none
     max_filename = 20, -- long filenames are replaced with ellipses
 
+    -- number or function
     -- border_height is automatically calculated based on the displayed content.
     float_height = function(border_height)
       -- the default is vertical-center
