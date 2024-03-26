@@ -37,9 +37,9 @@ return {
     vim.keymap.set('n', '<A-4>', function() bufpin.go_to(4) end, { desc = 'BufPin: go to file 4' })
     vim.keymap.set('n', '<A-5>', function() bufpin.go_to(5) end, { desc = 'BufPin: go to file 5' })
     vim.keymap.set('n', '<C-e>', function() bufpin.toggle() end, { desc = 'BufPin: toggle board' })
-    vim.keymap.set('n', '<leader>pp', function() bufpin.toggle_pin() end, { desc = 'BufPin: toggle pin' })
-    vim.keymap.set('n', '<leader>pr', function() bufpin.remove() end, { desc = 'BufPin: remove entry' })
-    vim.keymap.set('n', '<leader>pa', function() bufpin.remove_all() end, { desc = 'BufPin: remove all entry' })
+    vim.keymap.set('n', '<leader>pp', function() bufpin.toggle_pin() end, { desc = 'BufPin: toggle pinned' })
+    vim.keymap.set('n', '<leader>pr', function() bufpin.remove() end, { desc = 'BufPin: remove the current file from the board' })
+    vim.keymap.set('n', '<leader>pa', function() bufpin.remove_all() end, { desc = 'BufPin: empty board' })
     vim.keymap.set('n', '<A-h>', function() bufpin.prev_pinned() end, { desc = 'BufPin: switch prev pinned file' })
     vim.keymap.set('n', '<A-l>', function() bufpin.next_pinned() end, { desc = 'BufPin: switch next pinned file' })
     -- stylua: ignore end
