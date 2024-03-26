@@ -40,8 +40,8 @@ return {
     vim.keymap.set('n', '<leader>pp', function() bufpin.toggle_pin() end, { desc = 'BufPin: toggle pin' })
     vim.keymap.set('n', '<leader>pr', function() bufpin.remove() end, { desc = 'BufPin: remove entry' })
     vim.keymap.set('n', '<leader>pa', function() bufpin.remove_all() end, { desc = 'BufPin: remove all entry' })
-    vim.keymap.set('n', '<A-h>', function() bufpin.prev_pinned() end, { desc = 'BufPin: toggle pin' })
-    vim.keymap.set('n', '<A-l>', function() bufpin.next_pinned() end, { desc = 'BufPin: toggle pin' })
+    vim.keymap.set('n', '<A-h>', function() bufpin.prev_pinned() end, { desc = 'BufPin: switch prev pinned file' })
+    vim.keymap.set('n', '<A-l>', function() bufpin.next_pinned() end, { desc = 'BufPin: switch next pinned file' })
     -- stylua: ignore end
   end
 }
