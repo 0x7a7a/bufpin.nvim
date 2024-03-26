@@ -182,6 +182,10 @@ function App:go_to(index)
     index = 10
   end
 
+  if not index then
+    return
+  end
+
   local file = self.rank:get_file(index)
 
   if not file then
