@@ -1,10 +1,10 @@
-## BufPin.nvim📌
+## 📌BufPin.nvim
 BufPin.nvim is a plugin for displaying recent files and quickly switching between them. It features a togglable board that can move along with the window, helping you swiftly navigate through multiple files.
 
-## Demo
+## 🎥Demo
 [https://github.com/0x7a7a/bufpin.nvim/assets/8832748/9f007eef-a53b-45e7-b23b-f934e5dde6a2](https://github.com/0x7a7a/bufpin.nvim/assets/8832748/45bc4445-0577-4ce1-90bd-f1ebb984dda5)
 
-## Features
+## 🌟Features
 - The buffer list is automatically sorted based on the order of recently opened/switched files.
 - Shows the unsaved state of the file.
 - Use the "pinning" feature to keep files unaffected by the sorting rules, and quickly switch between them using custom keybindings.
@@ -12,11 +12,11 @@ BufPin.nvim is a plugin for displaying recent files and quickly switching betwee
 - Files of same name are automatically displayed with their parent directory.
 - The file list is separated by Git branch.
 
-## Differences from Harpoon or Others
+## 💪Differences from Harpoon or Others
 - Adds a list of recent files.
 - Persistent mini-menu aids in remembering file names.
 
-## Installation and keybindings
+## 📦Installation and keybindings
 ### Lazy
 ```lua
 return {
@@ -49,7 +49,7 @@ return {
 All APIs can be found in[lua/bufpin/init.lua](https://github.com/0x7a7a/bufpin.nvim/blob/master/lua/bufpin/init.lua)
 
 
-## Default Setting
+## ⚙️Default Setting
 ```lua
 {
   rank = {
@@ -82,7 +82,7 @@ All APIs can be found in[lua/bufpin/init.lua](https://github.com/0x7a7a/bufpin.n
 }
 ```
 
-## Other similar plugins
+## 🤝Other similar plugins
 - [harpoon](https://github.com/ThePrimeagen/harpoon)
 - [grapple.nvim](https://github.com/cbochs/grapple.nvim)
 - [arrow.nvim](https://github.com/otavioschwanck/arrow.nvim)
