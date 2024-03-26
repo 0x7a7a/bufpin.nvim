@@ -30,17 +30,17 @@ return {
 
     -- You can customize the keys to whatever you like!
     -- stylua: ignore start
-    Keymap('n', '<A-1>', function() bufpin.go_to(1) end, { desc = 'BufPin: go to file 1' })
-    Keymap('n', '<A-2>', function() bufpin.go_to(2) end, { desc = 'BufPin: go to file 2' })
-    Keymap('n', '<A-3>', function() bufpin.go_to(3) end, { desc = 'BufPin: go to file 3' })
-    Keymap('n', '<A-4>', function() bufpin.go_to(4) end, { desc = 'BufPin: go to file 4' })
-    Keymap('n', '<A-5>', function() bufpin.go_to(5) end, { desc = 'BufPin: go to file 5' })
-    Keymap('n', '<C-e>', function() bufpin.toggle() end, { desc = 'BufPin: toggle board' })
-    Keymap('n', '<leader>pp', function() bufpin.toggle_pin() end, { desc = 'BufPin: toggle pin' })
-    Keymap('n', '<leader>pr', function() bufpin.remove() end, { desc = 'BufPin: remove entry' })
-    Keymap('n', '<leader>pa', function() bufpin.remove_all() end, { desc = 'BufPin: remove all entry' })
-    Keymap('n', '<A-h>', function() bufpin.prev_pinned() end, { desc = 'BufPin: toggle pin' })
-    Keymap('n', '<A-l>', function() bufpin.next_pinned() end, { desc = 'BufPin: toggle pin' })
+    vim.keymap.set('n', '<A-1>', function() bufpin.go_to(1) end, { desc = 'BufPin: go to file 1' })
+    vim.keymap.set('n', '<A-2>', function() bufpin.go_to(2) end, { desc = 'BufPin: go to file 2' })
+    vim.keymap.set('n', '<A-3>', function() bufpin.go_to(3) end, { desc = 'BufPin: go to file 3' })
+    vim.keymap.set('n', '<A-4>', function() bufpin.go_to(4) end, { desc = 'BufPin: go to file 4' })
+    vim.keymap.set('n', '<A-5>', function() bufpin.go_to(5) end, { desc = 'BufPin: go to file 5' })
+    vim.keymap.set('n', '<C-e>', function() bufpin.toggle() end, { desc = 'BufPin: toggle board' })
+    vim.keymap.set('n', '<leader>pp', function() bufpin.toggle_pin() end, { desc = 'BufPin: toggle pin' })
+    vim.keymap.set('n', '<leader>pr', function() bufpin.remove() end, { desc = 'BufPin: remove entry' })
+    vim.keymap.set('n', '<leader>pa', function() bufpin.remove_all() end, { desc = 'BufPin: remove all entry' })
+    vim.keymap.set('n', '<A-h>', function() bufpin.prev_pinned() end, { desc = 'BufPin: toggle pin' })
+    vim.keymap.set('n', '<A-l>', function() bufpin.next_pinned() end, { desc = 'BufPin: toggle pin' })
     -- stylua: ignore end
   end
 }
@@ -64,7 +64,7 @@ All APIs can be found in[lua/bufpin/init.lua](https://github.com/0x7a7a/bufpin.n
     border = 'none', -- single / double / rounder /none
     max_filename = 20, -- long filenames are replaced with ellipses
 
-    -- number or function
+    -- can be a number (height of the window from top to bottom)
     -- border_height is automatically calculated based on the displayed content.
     float_height = function(border_height)
       -- the default is vertical-center
