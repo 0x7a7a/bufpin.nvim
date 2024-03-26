@@ -6,6 +6,7 @@ BufPin.nvim is a plugin for displaying recent files and quickly switching betwee
 
 ## Features
 - The buffer list is automatically sorted based on the order of recently opened/switched files.
+- Shows the unsaved state of the file.
 - Use the "pinning" feature to keep files unaffected by the sorting rules, and quickly switch between them using custom keybindings.
 - The dynamic mini-menu automatically follows as you switch between windows.
 - Duplicate files are automatically displayed with their parent directory.
