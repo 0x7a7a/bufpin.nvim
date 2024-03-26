@@ -9,7 +9,7 @@ BufPin.nvim is a plugin for displaying recent files and quickly switching betwee
 - Shows the unsaved state of the file.
 - Use the "pinning" feature to keep files unaffected by the sorting rules, and quickly switch between them using custom keybindings.
 - The dynamic mini-menu automatically follows as you switch between windows.
-- Duplicate files are automatically displayed with their parent directory.
+- Files of same name are automatically displayed with their parent directory.
 - The file list is separated by Git branch.
 
 ## Differences from Harpoon or Others
